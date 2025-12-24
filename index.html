@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmed Abdelwahed| Senior Game Programmer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent: #00d4ff;
+            --accent-dim: #00a8cc;
+            --accent-glow: rgba(0, 212, 255, 0.15);
+            --text-primary: #e8e8e8;
+            --text-secondary: #888;
+            --border: #2a2a35;
+            --gradient-1: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            --gradient-2: linear-gradient(135deg, #1a1a25 0%, #0a0a0f 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .project-media.gallery {
+            aspect-ratio: unset;
+            height: auto;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .project-media.gallery img {
+            height: 400px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        /* Animated background grid */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 24px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 10vw, 80px);
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.1s forwards;
+            text-align: center;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.2s forwards;
+        }
+
+        .hero-description {
+            max-width: 600px;
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.3s forwards;
+        }
+
+        .hero-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.4s forwards;
+        }
+
+        .hero-link {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--accent);
+            text-decoration: none;
+            padding: 12px 24px;
+            border: 1px solid var(--accent);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .hero-link:hover {
+            color: var(--bg-dark);
+        }
+
+        .hero-link:hover::before {
+            left: 0;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.5s forwards, bounce 2s ease infinite 1s;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--accent);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        /* Project Cards */
+        .projects-grid {
+            display: grid;
+            gap: 32px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 32px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--gradient-1);
+            transition: height 0.4s ease;
+        }
+
+        .project-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-dim);
+            transform: translateX(8px);
+        }
+
+        .project-card:hover::before {
+            height: 100%;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .project-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .project-platforms {
+            display: flex;
+            gap: 8px;
+        }
+
+        .platform-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            padding: 4px 10px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .project-role {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .project-media {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .project-media video,
+        .project-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            font-size: 13px;
+            padding: 4px 12px;
+            background: var(--bg-dark);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .project-link {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s ease;
+        }
+
+        .project-link:hover {
+            gap: 12px;
+        }
+
+        .project-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            border-color: var(--accent-dim);
+        }
+
+        .skill-category h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-item {
+            font-size: 14px;
+            padding: 6px 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        /* Contact Section */
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .contact-email {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(18px, 4vw, 28px);
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-block;
+            padding: 16px 32px;
+            border: 2px solid var(--accent);
+            transition: all 0.3s ease;
+            margin-bottom: 40px;
+        }
+
+        .contact-email:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+        }
+
+        .social-link {
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent);
+        }
+
+        .social-link svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(10px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            .project-card {
+                padding: 24px;
+            }
+
+            .hero {
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <p class="hero-tag">Senior Game Programmer</p>
+            <h1>Ahmed Gamal Abdelwahed </h1>
+            <p class="hero-description">
+                Specialized in building core gameplay systems from scratch.
+                Experienced across mobile, PC, and console with Unity and Unreal Engine.
+            </p>
+            <div class="hero-links">
+                <a href="https://github.com/AhmedAbdelwahed01" class="hero-link" target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/ahmed0001/" class="hero-link" target="_blank">LinkedIn</a>
+                <a href="mailto:ahmed.a.gamedev@gmail.com" class="hero-link">Contact</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag"></p>
+                <h2 class="section-title">Projects</h2>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Backpack Rumble -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Backpack Rumble</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Android</span>
+                            <span class="platform-tag">iOS</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Core Systems Programmer @ Sandsoft Ltd</p>
+                    <div class="project-media">
+                        <video id="BPR" src="BPR.mp4" autoplay muted loop playsinline
+                            style="width: auto; height: 100%; max-width: 100%"></video>
+
+                    </div>
+                    <p class="project-description">
+                        Built the core auto-chess combat system from scratch—the grid-based battle mechanics
+                        that drive the entire game. Created a custom balancing tool that let designers tune
+                        combat variables without code changes. Scaled with the team from 2 to 12 developers
+                        over 10 months.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">Auto-Chess</span>
+                        <span class="tech-tag">Tool Development</span>
+                    </div>
+                    <a href="https://play.google.com/store/apps/details?id=com.quicksand.backpack&hl=en"
+                        class="project-link" target="_blank">
+                        View on Play Store
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Stranded Deep -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Stranded Deep</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">PS4</span>
+                            <span class="platform-tag">Xbox One</span>
+                            <span class="platform-tag">PC</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Senior Game Developer @ Starloop Studios/Magic Media</p>
+                    <div class="project-media">
+                        <video id="SDdemo" src="SD_cridets.mp4" autoplay muted loop playsinline></video>
+                        <script>
+                            document.getElementById('SDdemo').addEventListener('loadedmetadata', function () {
+                                this.playbackRate = 7;
+                                this.play();
+                            });
+
+
+                            document.getElementById('SDdemo').addEventListener('timeupdate', function () {
+                                if (this.currentTime >= 60) {
+                                    this.playbackRate = 0.5;
+                                }
+                            });
+
+                            document.getElementById('SDdemo').addEventListener('timeupdate', function () {
+                                if (this.currentTime >= 66) {
+                                    this.currentTime = 0;
+                                    this.playbackRate = 7;
+
+                                }
+                            });
+                        </script>
+
+
+                    </div>
+                    <p class="project-description">
+                        Fixed critical multiplayer sync bugs and revamped existing features for
+                        the console release. Contributed to shipping this survival game on PlayStation 4
+                        and Xbox One platforms.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">Multiplayer</span>
+                        <span class="tech-tag">Console Porting</span>
+                    </div>
+                    <a href="https://store.steampowered.com/app/313120/Stranded_Deep/" class="project-link"
+                        target="_blank">
+                        View on Steam
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Merge Rumble -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Merge Rumble</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Android</span>
+                            <span class="platform-tag">iOS</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Game Programmer @ Sandsoft Ltd</p>
+                    <div class="project-media gallery">
+                        <img src="MR0.jpg" alt="Screenshot 1">
+                        <img src="MR1.jpg" alt="Screenshot 2">
+                        <img src="MR2.jpg" alt="Screenshot 3">
+                        <img src="MR3.jpg" alt="Screenshot 3">
+                        <img src="MR4.jpg" alt="Screenshot 3">
+                    </div>
+                    <p class="project-description">
+                        Built unit behavior systems using Behavior Trees and developed adaptive AI bot logic for
+                        opponents.
+                        Migrated dependency management from deprecated Zenject to a custom service locator architecture.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Mobile</span>
+                        <span class="tech-tag">Realtime Multiplayer</span>
+                        <span class="tech-tag">PVP</span>
+                        <span class="tech-tag">Game AI</span>
+                        <span class="tech-tag">Behaviour Tree</span>
+                    </div>
+                    <a href="https://play.google.com/store/apps/details?id=com.quicksand.mergerumble&hl=en"
+                        class="project-link" target="_blank">
+                        View on Play Store
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+                <!-- Design Tool -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Auto-Chess Design Tool</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Internal Tool</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Core Systems Programmer @ Sandsoft Ltd</p>
+                    <div class="project-media">
+                        <video id="BPR" src="BPR_Tools.mp4" autoplay muted loop playsinline
+                            style="width: auto; height: 100%; max-width: 100%"></video>
+
+                    </div>
+                    <p class="project-description">
+                        Custom Unity editor tool that enabled game designers to tune combat variables,
+                        unit stats, and battle configurations without touching code. Dramatically
+                        accelerated iteration cycles during development.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity Editor</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">Custom Tools</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Plugin -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">3D Flying Creature Navigation</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Unreal Plugin</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Personal Project</p>
+                    <div class="project-media">
+                        <image id="BPR" src="flying_nav_demo.gif" autoplay muted loop playsinline
+                            style="width: auto; height: 100%; max-width: 100%"></image>
+
+                    </div>
+                    <p class="project-description">
+                        Custom Unreal Engine plugin implementing A* pathfinding for flying creatures
+                        with dynamic obstacle avoidance. Built to handle 3D navigation scenarios
+                        that standard navmesh solutions don't support.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unreal Engine</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">A* Pathfinding</span>
+                        <span class="tech-tag">AI Navigation</span>
+                    </div>
+                    <a href="https://github.com/AhmedAbdelwahed01/UnrealSimple3DNavigation" class="project-link"
+                        target="_blank">
+                        View on GitHub
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- TUBiT - Social Media Tycoon -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">TUBiT - Social Media Tycoon</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Android</span>
+                            <span class="platform-tag">iOS</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Lead Programmer @ Starloop Studios</p>
+                    <div class="project-media gallery">
+                        <img src="TubitIcon.jpg" alt="App Icon" class="app-icon">
+                        <img src="Tubit0.jpg" alt="Screenshot 2">
+                        <img src="Tubit1.jpg" alt="Screenshot 3">
+                    </div>
+                    <p class="project-description">
+                        Led development from prototype to release, orchestrating collaboration between design,
+                        art, and programming teams. Established CI/CD pipelines automating iOS and Android delivery.
+                        Built backend services, customization system, shop,
+                        and IAP integration. Managed publishing for both platforms.
+
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">Mobile</span>
+                        <span class="tech-tag">Backend</span>
+                        <span class="tech-tag">CI/CD</span>
+                        <span class="tech-tag">Publishing</span>
+                    </div>
+                    <a href="https://apkgk.com/com.glassfurnace.tubex" class="project-link" target="_blank">
+                        View on Store
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- CanterVR -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">CanterVR</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Android</span>
+                            <span class="platform-tag">iOS</span>
+                            <span class="platform-tag">OculusQuest</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Unity Developer @ Imagine better solutions</p>
+                    <div class="project-media">
+                        <video id="CV1" src="CV1.mp4" autoplay muted loop playsinline></video>
+                        <script>
+                            document.getElementById('CV1').addEventListener('loadedmetadata', function () {
+                                this.playbackRate = 1.2;
+                                this.play();
+                            });
+                        </script>
+
+
+                    </div>
+                    <p class="project-description">
+                        Built native iOS plugins for Unity to integrate the RealVNC SDK (Objective-C), enabling remote
+                        desktop access within VR experiences.
+                        Developed a custom input system plugin mapping native iOS keyboard and mouse to Unity's new
+                        Input System.
+                    </p>
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">Objective-C</span>
+                        <span class="tech-tag">Native plugins</span>
+                    </div>
+                    <a href="https://www.cantervr.com/" class="project-link" target="_blank">
+                        App Website
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+                <!--Standard AI -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Standard AI</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">WebGL</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Freelance Unity Developer</p>
+                    <div class="project-media gallery">
+                        <img src="StandardAI.jpg" alt="Screenshot 1">
+
+                    </div>
+                    <ul class="project-description-list">
+                        <li>Built a Unity plugin wrapping Auth0 REST API for seamless C# integration</li>
+                        <li>Developed native WebGL plugin enabling clipboard sharing between Unity and web apps</li>
+                        <li>Revamped UI screens using clean MVP architecture</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">WebGL</span>
+                        <span class="tech-tag">JS</span>
+                        <span class="tech-tag">Backend</span>
+                        <span class="tech-tag">UI</span>
+                        <span class="tech-tag">Native plugin</span>
+                    </div>
+                    <a href="https://standard.ai/" class="project-link" target="_blank">
+                        Product Website
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+                <!--Magic Letters -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Magic Letters</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Android</span>
+                            <span class="platform-tag">iOS</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Game Developer @ Epic Systems Digital Solutions</p>
+                    <div class="project-media gallery">
+                        <img src="ML1.jpg" alt="Screenshot 1">
+                        <img src="ML2.jpg" alt="Screenshot 2">
+                        <img src="ML3.jpg" alt="Screenshot 3">
+                    </div>
+                    <p class="project-description">
+                        Led development from prototype to release, coordinating design and art teams.
+                        Built a streaming pipeline using Addressables with AWS CDN for optimized asset delivery.
+                        Integrated backend services, IAP with server-side validation, and managed publishing for iOS and
+                        Android.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">AR</span>
+                        <span class="tech-tag">ML/OpenCV</span>
+                        <span class="tech-tag">Mobile</span>
+                        <span class="tech-tag">Backend</span>
+                        <span class="tech-tag">Addressables</span>
+                        <span class="tech-tag">Publishing</span>
+                    </div>
+                    <a href="https://www.magic-letters.com/index-en.html" class="project-link" target="_blank">
+                        Game Website
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!--Epic Mar -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Epic Mar</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Android</span>
+                            <span class="platform-tag">iOS</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Game Developer @ Epic Systems Digital Solutions</p>
+                    <div class="project-media gallery">
+                        <img src="EM1.jpg" alt="Screenshot 1">
+                        <img src="EM2.jpg" alt="Screenshot 2">
+                    </div>
+                    <p class="project-description">
+                        AR application for organizations to dynamically augment image targets with UI elements,
+                        videos, and 3D models. Migrated the app from native iOS/Android to a cross-platform
+                        Unity solution using Vuforia SDK.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">AR</span>
+                        <span class="tech-tag">Mobile</span>
+                        <span class="tech-tag">Backend</span>
+                        <span class="tech-tag">AssetBundles</span>
+                        <span class="tech-tag">Publishing</span>
+                    </div>
+                    <a href="https://apps.apple.com/sa/app/epic-mar/id535122470" class="project-link" target="_blank">
+                        Appstore
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+
+                <!-- .erth -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">.erth</h3>
+                        <div class="project-platforms">
+                            <span class="platform-tag">Windows</span>
+                            <span class="platform-tag">Mac</span>
+                            <span class="platform-tag">Linux</span>
+                            <span class="platform-tag">NFT Platform</span>
+                            <span class="platform-tag">Deprecated</span>
+                        </div>
+                    </div>
+                    <p class="project-role">Senior Game Developer @Starloop Studios</p>
+                    <div class="project-media" style="height: 80px; background: var(--bg-card);">
+                        <p style="color: var(--text-secondary); font-size: 14px;">Assets under NDA</p>
+                    </div>
+                    <p class="project-description">
+                        NFT-based platform where creators could build experiences, publish them, and sell virtual land.
+                        Designed the initial architecture for the Experience Builder and developed the full asset
+                        pipeline—GLTF
+                        importing, encryption, and runtime dynamic loading.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unity</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">GLTF Pipeline</span>
+                        <span class="tech-tag">Runtime Asset Loading</span>
+                        <span class="tech-tag">Encryption</span>
+                        <span class="tech-tag">Systems Architect</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">// Tech Stack</p>
+                <h2 class="section-title">Skills</h2>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Game Engines</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Unity (C#)</span>
+                        <span class="skill-item">Unreal Engine (C++)</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Languages</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">C#</span>
+                        <span class="skill-item">C/C++</span>
+                        <span class="skill-item">CUDA C++</span>
+                        <span class="skill-item">Java</span>
+                        <span class="skill-item">Python</span>
+                        <span class="skill-item">Objective-C</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Multiplayer & Backend</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Photon</span>
+                        <span class="skill-item">EOS</span>
+                        <span class="skill-item">PlayFab</span>
+                        <span class="skill-item">Firebase</span>
+                        <span class="skill-item">AWS-Azure-GCP</span>
+                        <span class="skill-item">Dedicated Servers</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>AR / VR</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">AR Foundation</span>
+                        <span class="skill-item">ARCore</span>
+                        <span class="skill-item">ARKit</span>
+                        <span class="skill-item">Oculus Quest</span>
+                        <span class="skill-item">HTC Vive</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Tools & Pipeline</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Git</span>
+                        <span class="skill-item">Perforce</span>
+                        <span class="skill-item">CI/CD</span>
+                        <span class="skill-item">Jira</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Other</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Computer Vision / OpenCV</span>
+                        <span class="skill-item">TensorFlow</span>
+                        <span class="skill-item">Embeded Systems Development</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">// Let's Connect</p>
+                <h2 class="section-title">Contact</h2>
+            </div>
+
+            <div class="contact-content">
+                <p>
+                    Whether you have a question or just want to say hi, I'll get back to you.
+                </p>
+                <a href="mailto:ahmed.a.gamedev@gmail.com" class="contact-email"
+                    onclick="navigator.clipboard.writeText('ahmed.a.gamedev@gmail.com'); alert('Email copied!'); return true;">
+                    ahmed.a.gamedev@gmail.com
+                </a>
+                <div class="social-links">
+                    <a href="https://github.com/AhmedAbdelwahed01" class="social-link" target="_blank"
+                        aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ahmed0001/" class="social-link" target="_blank"
+                        aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                        </svg>
+                    </a>
+                    <a href="https://gitlab.com/AhmedAbdelwahed01" class="social-link" target="_blank"
+                        aria-label="GitLab">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.51L23 13.45a.84.84 0 0 1-.35.94z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Ahmed Gamal Abdelwahed. Built with code and coffee.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
